@@ -43,13 +43,15 @@ var pollBuilderOptions = {
 }
 PollBuilderInject.embed('jyrYBBYooL7L8Lgb', pollBuilderOptions, function(){
 	// BEGIN temp
-	var btn = document.querySelector('#pollbuilder-button-0');
-	btn.style.width = btn.style.height = 'auto';
-	btn.style.right = '3vm';
-	btn.style.bottom = 'calc(3vm + 30px)';
-	var pb = document.querySelector('#pollbuilder-sticky-0');
-	pb.style.right = '3vm';
-	pb.style.bottom = 'calc(3vm + 30px)';
+	setTimeout(function(){
+		var btn = document.querySelector('#pollbuilder-button-0');
+		btn.style.width = btn.style.height = 'auto';
+		btn.style.right = '3vm';
+		btn.style.bottom = 'calc(3vm + 30px)';
+		var pb = document.querySelector('#pollbuilder-sticky-0');
+		pb.style.right = '3vm';
+		pb.style.bottom = 'calc(3vm + 30px)';
+	},10)
 	// END temp
 	PollBuilderInject.autoHideButtons('.poll-builer-add-button');
 })
