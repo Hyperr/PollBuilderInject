@@ -42,5 +42,8 @@ var pollBuilderOptions = {
 	zIndex: 99
 }
 PollBuilderInject.embed('jyrYBBYooL7L8Lgb', pollBuilderOptions, function(){
-	//PollBuilderInject.autoHideButtons('.poll-builer-add-button');
+	var btn = document.querySelector('#pollbuilder-button-0');
+	btn.style.right = '3vm';
+	btn.style.bottom = 'calc(3vm + 30px)';
+	PollBuilderInject.autoHideButtons('.poll-builer-add-button');
 })
