@@ -87,24 +87,20 @@ class PollBuilderInject
 	static autoHideButtons(btns)
 	{
 		if (typeof btns === 'string')
-			btns = document.querySelectorAll(btns);
+			btns = Array.prototype.slice.call( document.querySelectorAll(btns) );
 		
-		for (var i=0,ii=btns.length; i<ii; i++)
-		{
-			var button = btns[i];
-			pollBuilder.addEventListener("pb:maximized", function(){
-				pollBuilderButtons.map(function(button){
-					button.style.opacity = '1';
-					button.style.pointerEvents = 'auto';
-				})
+		pollBuilder.addEventListener("pb:maximized", function(){
+			btns.map(function(button){
+				button.style.opacity = '1';
+				button.style.pointerEvents = 'auto';
 			})
-			pollBuilder.addEventListener("pb:minimized", function(){
-				pollBuilderButtons.map(function(button){
-					button.style.opacity = '0';
-					button.style.pointerEvents = 'none';
-				})
+		})
+		pollBuilder.addEventListener("pb:minimized", function(){
+			btns.map(function(button){
+				button.style.opacity = '0';
+				button.style.pointerEvents = 'none';
 			})
-		}
+		})
 	}
 }
 
