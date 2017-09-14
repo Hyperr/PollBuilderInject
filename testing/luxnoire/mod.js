@@ -18,8 +18,8 @@ PollBuilderInject.map('body.template-collection', '.product-grid-item', function
 	s.transition = 'opacity 0.4s';
 	s.opacity = '0';
 	s.pointerEvents = 'none';
-	//s.fontFamily = '"Oswald","Helvetica Neue",Arial,sans-serif"';
-	s.fontSize = '16px';
+	s.fontFamily = '"Oswald","Helvetica Neue",Arial,sans-serif"';
+	s.fontSize = '14px';
 	s.textTransform = 'uppercase';
 	s.position = 'absolute';
 	s.right = '50%';
