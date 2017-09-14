@@ -81,6 +81,31 @@ class PollBuilderInject
 	{
 		return URLToolkit.buildAbsoluteURL(document.location.href, url);
 	}
+	
+	// automatically sets up buttons (either as an array of elements, or a query selector) to show/hide as pollbuilder does
+	// NOTE: must ONLY be called after successful embed (i.e. on the callback)
+	static autoHideButtons(btns)
+	{
+		if (typeof btns === 'string')
+			btns = document.querySelectorAll(btns);
+		
+		for (var i=0,ii=btns.length; i<ii; i++)
+		{
+			var button = btns[i];
+			pollBuilder.addEventListener("pb:maximized", function(){
+				pollBuilderButtons.map(function(button){
+					button.style.opacity = '1';
+					button.style.pointerEvents = 'auto';
+				})
+			})
+			pollBuilder.addEventListener("pb:minimized", function(){
+				pollBuilderButtons.map(function(button){
+					button.style.opacity = '0';
+					button.style.pointerEvents = 'none';
+				})
+			})
+		}
+	}
 }
 
 window.PollBuilderInject = PollBuilderInject;
