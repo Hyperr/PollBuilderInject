@@ -10,6 +10,7 @@ PollBuilderInject.map('body.template-collection', '.product-grid-item', function
 	var button = document.createElement('div');
 	button.setAttribute('class', 'poll-builer-add-button');
 	button.innerHTML = 'Add to Poll';
+	button.addEventListener('click', function(evt){ evt.preventDefault(); });
 	var s = button.style;
 	s.color = '#fff';
 	s.background = '#000';
@@ -18,7 +19,7 @@ PollBuilderInject.map('body.template-collection', '.product-grid-item', function
 	s.transition = 'opacity 0.4s';
 	s.opacity = '0';
 	s.pointerEvents = 'none';
-	s.fontFamily = '"Oswald","Helvetica Neue",Arial,sans-serif"';
+	s.fontFamily = '"Oswald","Helvetica Neue",Arial,sans-serif';
 	s.fontSize = '14px';
 	s.textTransform = 'uppercase';
 	s.position = 'absolute';
@@ -26,7 +27,7 @@ PollBuilderInject.map('body.template-collection', '.product-grid-item', function
 	s.bottom = '50%';
 	s.transform = 'translate(50%, 50%)';
 	s.whiteSpace = 'nowrap';
-	item.append(button);
+	dragger.append(button);
 	PollBuilderInject.addDataElement(button, img, lnk);
 })
 var pollBuilderOptions = {
