@@ -25,7 +25,7 @@ PollBuilderInject.map('body.template-collection', '.product-grid-item', function
 	s.textTransform = 'uppercase';
 	s.position = 'absolute';
 	s.right = '50%';
-	s.top = '-50px';
+	s.top = '-58px';
 	s.transform = 'translate(50%, 50%)';
 	s.whiteSpace = 'nowrap';
 	item.querySelector('.under').append(button);
@@ -44,15 +44,15 @@ var pollBuilderOptions = {
 }
 PollBuilderInject.embed('jyrYBBYooL7L8Lgb', pollBuilderOptions, function(){
 	// BEGIN temp
-	setTimeout(function(){
+	pollBuilder.addEventListener('pb:init', function(){
 		var btn = document.querySelector('#pollbuilder-button-0');
 		btn.style.width = btn.style.height = 'auto';
 		btn.style.right = '3vw';
-		btn.style.bottom = 'calc(3vw + 30px)';
+		btn.style.bottom = 'calc(3vw + 28px)';
 		var pb = document.querySelector('#pollbuilder-sticky-0');
 		pb.style.right = '3vw';
-		pb.style.bottom = 'calc(3vw + 30px)';
-	},2000)
+		pb.style.bottom = 'calc(3vw + 28px)';
+	})
 	// END temp
 	PollBuilderInject.autoHideButtons('.poll-builer-add-button');
 })
