@@ -24,10 +24,10 @@ PollBuilderInject.map('body.template-collection', '.product-grid-item', function
 	s.textTransform = 'uppercase';
 	s.position = 'absolute';
 	s.right = '50%';
-	s.bottom = '50%';
+	s.top = '-50px';
 	s.transform = 'translate(50%, 50%)';
 	s.whiteSpace = 'nowrap';
-	dragger.append(button);
+	item.querySelector('.under').append(button);
 	PollBuilderInject.addDataElement(button, img, lnk);
 })
 var pollBuilderOptions = {
