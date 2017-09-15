@@ -15,7 +15,8 @@ PollBuilderInject.map('body.template-collection', '.product-grid-item', function
 	s.color = '#fff';
 	s.background = '#000';
 	s.cursor = 'pointer';
-	s.padding = '3px 8px';
+	s.padding = '4px 10px';
+	s.borderRadius = '5px';
 	s.transition = 'opacity 0.4s';
 	s.opacity = '0';
 	s.pointerEvents = 'none';
