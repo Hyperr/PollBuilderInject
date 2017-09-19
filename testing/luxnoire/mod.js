@@ -43,6 +43,6 @@ var pollBuilderOptions = {
 	buttonStyles: '',
 	zIndex: 100
 }
-PollBuilderInject.embed('jyrYBBYooL7L8Lgb', pollBuilderOptions, function(){
+PollBuilderInject.embed('lM2aGpiiA0GzDfTh', pollBuilderOptions, function(){
 	PollBuilderInject.autoHideButtons('.poll-builer-add-button');
 })
