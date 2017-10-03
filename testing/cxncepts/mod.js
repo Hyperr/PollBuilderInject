@@ -11,11 +11,13 @@ var doEmbed = PollBuilderInject.map('body.template-collection', '.product-item',
 	PollBuilderInject.addDataElement(dragger, img, lnk);
 	
 	var button = PollBuilderInject.defaultButton(img, lnk);
+	var s = button.style;
 	s.borderRadius = '2px';
 	s.position = 'absolute';
 	s.right = '50%';
 	s.top = '50%';
 	s.transform = 'translate(50%, 50%)';
+	dragger.append(button);
 }, 1000)
 var pollBuilderOptions = {
 	addButtons:'.poll-builer-add-button',
