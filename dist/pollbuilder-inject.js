@@ -73,7 +73,7 @@
 			/**
 	  	The main mapping function for usage when injecting the poll builder into the page.
 	  */
-			value: function map(requirements, itemSelector, logic) {
+			value: function map(requirements, itemSelector, logic, intvl) {
 				// figure out if page meets requirements and should have poll builder injected
 				if (Array.isArray(requirements)) {
 					if (!requirements.some(document.querySelector(sel))) return false;
@@ -86,7 +86,7 @@
 				}
 	
 				// figure out what elements on the page are the items themselves
-				var items;
+				var items, item;
 				if (Array.isArray(itemSelector)) items = itemSelector;else if (typeof itemSelector === 'function') items = itemSelector();else if (typeof itemSelector === 'string') items = document.querySelectorAll(itemSelector);else throw new Error('Invalid item selector value');
 	
 				// for every item run the logic supplied
@@ -96,10 +96,13 @@
 	
 				try {
 					for (var _iterator = items[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-						var item = _step.value;
+						item = _step.value;
 	
 						logic(item);
-					} // return true for success
+					} // If an interval is supplied, check again on that interval.
+					// This is specifically for the purpose of pages that load more
+					// items dynamically, so that it can detect new items later.
+					// Function should check for if items have already been modified.
 				} catch (err) {
 					_didIteratorError = true;
 					_iteratorError = err;
@@ -115,24 +118,45 @@
 					}
 				}
 	
+				if (intvl) {
+					PollBuilderInject._interval = setInterval(function () {
+						var _iteratorNormalCompletion2 = true;
+						var _didIteratorError2 = false;
+						var _iteratorError2 = undefined;
+	
+						try {
+							for (var _iterator2 = items[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+								item = _step2.value;
+	
+								logic(item);
+							}
+						} catch (err) {
+							_didIteratorError2 = true;
+							_iteratorError2 = err;
+						} finally {
+							try {
+								if (!_iteratorNormalCompletion2 && _iterator2.return) {
+									_iterator2.return();
+								}
+							} finally {
+								if (_didIteratorError2) {
+									throw _iteratorError2;
+								}
+							}
+						}
+					}, intvl);
+				}
+	
+				// return true for success
 				return true;
 			}
-	
-			// shortcut that can be used by the mapping logic functions for the adding of data element
-	
-		}, {
-			key: 'addDataElement',
-			value: function addDataElement(elem, image, link) {
-				var obj = { image: image };
-				if (link) obj.link = link;
-	
-				elem.setAttribute('data-poll-builder', JSON.stringify(obj));
-			}
-	
-			// adds the poll builder embedding script to the page, and then embeds sticky-style
-	
 		}, {
 			key: 'embed',
+	
+	
+			/**
+	  	Adds the poll builder embedding script to the page, and then embeds sticky-style.
+	  */
 			value: function embed(token, options, callback) {
 				// allow (token, callback) format if no options
 				if (typeof options === 'function' && typeof callback === 'undefined') callback = options;
@@ -148,7 +172,22 @@
 				document.getElementsByTagName('head')[0].appendChild(script);
 			}
 	
-			// makes a url such as `/folder/resource.ext` or `folder/resource.ext` and converts to proper absolute URL
+			/**
+	  	Shortcut that can be used by the mapping logic functions for the adding of data element.
+	  */
+	
+		}, {
+			key: 'addDataElement',
+			value: function addDataElement(elem, image, link) {
+				var obj = { image: image };
+				if (link) obj.link = link;
+	
+				elem.setAttribute('data-poll-builder', JSON.stringify(obj));
+			}
+	
+			/**
+	  	Makes a url such as `/folder/resource.ext` or `folder/resource.ext` and converts to proper absolute URL.
+	  */
 	
 		}, {
 			key: 'absoluteURL',
@@ -156,8 +195,10 @@
 				return _urlToolkit2.default.buildAbsoluteURL(document.location.href, url);
 			}
 	
-			// automatically sets up buttons (either as an array of elements, or a query selector) to show/hide as pollbuilder does
-			// NOTE: must ONLY be called after successful embed (i.e. on the callback)
+			/**
+	  	Automatically sets up buttons (either as an array of elements, or a query selector) to show/hide as pollbuilder does.
+	  	@note - must ONLY be called after successful loading of the pollBuilder object/script (i.e. on the callback)
+	  */
 	
 		}, {
 			key: 'autoHideButtons',
@@ -181,6 +222,9 @@
 	
 		return PollBuilderInject;
 	}();
+	
+	PollBuilderInject._interval = null;
+	
 	
 	window.PollBuilderInject = PollBuilderInject;
 

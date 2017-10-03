@@ -13,7 +13,7 @@ class PollBuilderInject
 	/**
 		The main mapping function for usage when injecting the poll builder into the page.
 	*/
-	static map(requirements, itemSelector, logic)
+	static map(requirements, itemSelector, logic, intvl)
 	{
 		// figure out if page meets requirements and should have poll builder injected
 		if (Array.isArray(requirements)) {
@@ -31,7 +31,7 @@ class PollBuilderInject
 		}
 		
 		// figure out what elements on the page are the items themselves
-		var items;
+		var items, item;
 		if (Array.isArray(itemSelector))
 			items = itemSelector;
 		else if (typeof itemSelector === 'function')
@@ -42,23 +42,28 @@ class PollBuilderInject
 			throw new Error('Invalid item selector value');
 		
 		// for every item run the logic supplied
-		for (var item of items)
+		for (item of items)
 			logic(item);
+		
+		// If an interval is supplied, check again on that interval.
+		// This is specifically for the purpose of pages that load more
+		// items dynamically, so that it can detect new items later.
+		// Function should check for if items have already been modified.
+		if (intvl) {
+			PollBuilderInject._interval = setInterval(()=>{
+				for (item of items)
+					logic(item);
+			}, intvl)
+		}
 		
 		// return true for success
 		return true;
 	}
+	static _interval = null;
 	
-	// shortcut that can be used by the mapping logic functions for the adding of data element
-	static addDataElement(elem, image, link)
-	{
-		var obj = {image:image};
-		if (link) obj.link = link;
-		
-		elem.setAttribute('data-poll-builder', JSON.stringify(obj));
-	}
-	
-	// adds the poll builder embedding script to the page, and then embeds sticky-style
+	/**
+		Adds the poll builder embedding script to the page, and then embeds sticky-style.
+	*/
 	static embed(token, options, callback)
 	{
 		// allow (token, callback) format if no options
@@ -76,14 +81,29 @@ class PollBuilderInject
 		document.getElementsByTagName('head')[0].appendChild(script);
 	}
 	
-	// makes a url such as `/folder/resource.ext` or `folder/resource.ext` and converts to proper absolute URL
+	/**
+		Shortcut that can be used by the mapping logic functions for the adding of data element.
+	*/
+	static addDataElement(elem, image, link)
+	{
+		var obj = {image:image};
+		if (link) obj.link = link;
+		
+		elem.setAttribute('data-poll-builder', JSON.stringify(obj));
+	}
+	
+	/**
+		Makes a url such as `/folder/resource.ext` or `folder/resource.ext` and converts to proper absolute URL.
+	*/
 	static absoluteURL(url)
 	{
 		return URLToolkit.buildAbsoluteURL(document.location.href, url);
 	}
 	
-	// automatically sets up buttons (either as an array of elements, or a query selector) to show/hide as pollbuilder does
-	// NOTE: must ONLY be called after successful embed (i.e. on the callback)
+	/**
+		Automatically sets up buttons (either as an array of elements, or a query selector) to show/hide as pollbuilder does.
+		@note - must ONLY be called after successful loading of the pollBuilder object/script (i.e. on the callback)
+	*/
 	static autoHideButtons(btns)
 	{
 		if (typeof btns === 'string')

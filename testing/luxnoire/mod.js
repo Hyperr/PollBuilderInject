@@ -1,7 +1,7 @@
 <!-- BEGIN POLL BUILDER INJECTION -->
-<script src="http://scripts.gethyperr.com/pollbuilder-inject/latest.js"></script>
+<script src="https://scripts.gethyperr.com/pollbuilder-inject/latest.js"></script>
 <script>
-PollBuilderInject.map('body.template-collection', '.product-grid-item', function(item)
+var doEmbed = PollBuilderInject.map('body.template-collection', '.product-grid-item', function(item)
 {
 	var img = PollBuilderInject.absoluteURL( item.querySelector('.grid__image img').src );
 	var lnk = PollBuilderInject.absoluteURL( item.querySelector('a.grid__image').getAttribute('href') );
@@ -46,8 +46,10 @@ var pollBuilderOptions = {
 	buttonStyles: '',
 	zIndex: 100
 }
-PollBuilderInject.embed('lM2aGpiiA0GzDfTh', pollBuilderOptions, function(){
-	PollBuilderInject.autoHideButtons('.poll-builer-add-button');
-})
+if (doEmbed) {
+	PollBuilderInject.embed('lM2aGpiiA0GzDfTh', pollBuilderOptions, function(){
+	    PollBuilderInject.autoHideButtons('.poll-builer-add-button');
+	})
+}
 </script>
 <!-- END POLL BUILDER INJECTION -->
