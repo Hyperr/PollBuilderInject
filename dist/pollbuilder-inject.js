@@ -186,6 +186,19 @@
 			}
 	
 			/**
+	  	Checks an element for the presence of the data element.
+	  */
+	
+		}, {
+			key: 'hasDataElement',
+			value: function hasDataElement(elem) {
+				var child = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+	
+				var check = child ? elem.querySelector(child) : elem;
+				return check.hasAttribute('data-poll-builder');
+			}
+	
+			/**
 	  	Makes a url such as `/folder/resource.ext` or `folder/resource.ext` and converts to proper absolute URL.
 	  */
 	
@@ -196,13 +209,62 @@
 			}
 	
 			/**
+	  	Reads a computed background url for an element (useful when finding an image url that's applied via CSS)
+	  */
+	
+		}, {
+			key: 'getBackgroundImage',
+			value: function getBackgroundImage(element) {
+				var comp = window.getComputedStyle(element);
+	
+				if (comp && comp.getPropertyValue) {
+					var bg = comp.getPropertyValue('background-image');
+					if (!bg) return null;
+					return bg.replace(/^\s*?url\(('|")(.*)('|")\)/, '$2');
+				} else {
+					return null;
+				}
+			}
+	
+			/**
+	  	Creates a default template for an "Add to Poll" button and returns it.
+	  */
+	
+		}, {
+			key: 'defaultButton',
+			value: function defaultButton(img, lnk) {
+				var button = document.createElement('div');
+				button.setAttribute('class', 'poll-builer-add-button');
+				button.innerHTML = 'Add to Poll';
+				button.addEventListener('click', function (evt) {
+					evt.preventDefault();
+				});
+				var s = button.style;
+				s.cursor = 'pointer';
+				s.padding = '4px 10px';
+				s.transition = 'opacity 0.4s';
+				s.opacity = '0';
+				s.pointerEvents = 'none';
+				s.fontSize = '14px';
+				s.color = '#fff';
+				s.background = '#000';
+				s.whiteSpace = 'nowrap';
+	
+				if (img && lnk) PollBuilderInject.addDataElement(button, img, lnk);
+	
+				return button;
+			}
+	
+			/**
 	  	Automatically sets up buttons (either as an array of elements, or a query selector) to show/hide as pollbuilder does.
 	  	@note - must ONLY be called after successful loading of the pollBuilder object/script (i.e. on the callback)
 	  */
 	
 		}, {
 			key: 'autoHideButtons',
-			value: function autoHideButtons(btns) {
+			value: function autoHideButtons() {
+				var btns = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '.poll-builer-add-button';
+	
 				if (typeof btns === 'string') btns = Array.prototype.slice.call(document.querySelectorAll(btns));
 	
 				pollBuilder.addEventListener("pb:maximized", function () {
@@ -216,6 +278,27 @@
 						button.style.opacity = '0';
 						button.style.pointerEvents = 'none';
 					});
+				});
+			}
+	
+			/**
+	  	Automatically sets up a single button (either as an element, or a query selector) to show/hide as pollbuilder does.
+	  	Different from the plural for the reason that when the interval form of `map` is used they need to be added individually.
+	  	@note - must ONLY be called after successful loading of the pollBuilder object/script (i.e. on the callback)
+	  */
+	
+		}, {
+			key: 'autoHideButton',
+			value: function autoHideButton(btn) {
+				if (typeof btn === 'string') btn = Array.prototype.slice.call(document.querySelector(btn));
+	
+				pollBuilder.addEventListener("pb:maximized", function () {
+					btn.style.opacity = '1';
+					btn.style.pointerEvents = 'auto';
+				});
+				pollBuilder.addEventListener("pb:minimized", function () {
+					btn.style.opacity = '0';
+					btn.style.pointerEvents = 'none';
 				});
 			}
 		}]);
