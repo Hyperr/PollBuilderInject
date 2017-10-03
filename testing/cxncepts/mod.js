@@ -15,8 +15,10 @@ var doEmbed = PollBuilderInject.map('body.template-collection', '.product-item',
 	s.top = '50%';
 	s.transform = 'translate(50%, 50%)';
 	dragger.append(button);
+	PollBuilderInject.autoHideButton(button);
 	
 }, 1000)
+
 var pollBuilderOptions = {
 	addButtons:'.poll-builer-add-button',
 	//builderOffsetX:'3vw',
@@ -29,8 +31,6 @@ var pollBuilderOptions = {
 	//buttonStyles: '',
 	//zIndex: 100
 }
-if (doEmbed) {
-	PollBuilderInject.embed('lM2aGpiiA0GzDfTh', pollBuilderOptions, function(){
-	    PollBuilderInject.autoHideButtons('.poll-builer-add-button');
-	})
-}
+
+if (doEmbed)
+	PollBuilderInject.embed('lM2aGpiiA0GzDfTh', pollBuilderOptions);
