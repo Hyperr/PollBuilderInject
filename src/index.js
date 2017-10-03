@@ -53,10 +53,15 @@ class PollBuilderInject
 		// This is specifically for the purpose of pages that load more
 		// items dynamically, so that it can detect new items later.
 		if (intvl) {
+			clearInterval(PollBuilderInject._interval);
 			PollBuilderInject._interval = setInterval(()=>{
 				PollBuilderInject.map(requirements, itemSelector, logic);
 			}, intvl)
 		}
+		
+		// if the buttons are set up and have instruction to automatically update every new mapping, then do so
+		if (PollBuilderInject._buttonUpdateSelector)
+			PollBuilderInject.autoHideButtons(PollBuilderInject._buttonUpdateSelector);
 		
 		// return true for success
 		return true;
@@ -155,47 +160,64 @@ class PollBuilderInject
 	}
 	
 	/**
-		Automatically sets up buttons (either as an array of elements, or a query selector) to show/hide as pollbuilder does.
+		Automatically sets up buttons (either as an array/nodelist of elements, a single element, or a query selector) to show/hide as poll builder does.
 		@note - must ONLY be called after successful loading of the pollBuilder object/script (i.e. on the callback)
+		@note - can be called multiple times to add more each time
 	*/
-	static autoHideButtons(btns = '.poll-builer-add-button')
+	static autoHideButtons(btns = '.poll-builer-add-button', autoUpdate = false)
 	{
+		if (autoUpdate)
+		{
+			if (typeof btns === 'string')
+				PollBuilderInject._buttonUpdateSelector = btns;
+			else
+				throw new Error('To use autoUpdate you must supply a query selector string as the main button identifier.');
+		}
+		
+		
 		if (typeof btns === 'string')
 			btns = Array.prototype.slice.call( document.querySelectorAll(btns) );
+		else if (btns instanceof NodeList)
+			btns = Array.prototype.slice.call(btns);
+		else if (!Array.isArray(btns))
+			btns = [btns];
 		
-		pollBuilder.addEventListener("pb:maximized", function(){
-			btns.map(function(button){
-				button.style.opacity = '1';
-				button.style.pointerEvents = 'auto';
-			})
-		})
-		pollBuilder.addEventListener("pb:minimized", function(){
-			btns.map(function(button){
-				button.style.opacity = '0';
-				button.style.pointerEvents = 'none';
-			})
-		})
-	}
-	
-	/**
-		Automatically sets up a single button (either as an element, or a query selector) to show/hide as pollbuilder does.
-		Different from the plural for the reason that when the interval form of `map` is used they need to be added individually.
-		@note - must ONLY be called after successful loading of the pollBuilder object/script (i.e. on the callback)
-	*/
-	static autoHideButton(btn)
-	{
-		if (typeof btn === 'string')
-			btn = Array.prototype.slice.call( document.querySelector(btn) );
+		PollBuilderInject._buttons = mergeArrays(PollBuilderInject._buttons, btns);
 		
-		pollBuilder.addEventListener("pb:maximized", function(){
-			btn.style.opacity = '1';
-			btn.style.pointerEvents = 'auto';
-		})
-		pollBuilder.addEventListener("pb:minimized", function(){
-			btn.style.opacity = '0';
-			btn.style.pointerEvents = 'none';
-		})
+		if (!PollBuilderInject._buttonsListening)
+		{
+			pollBuilder.addEventListener("pb:maximized", function(){
+				PollBuilderInject._buttons.map(function(button){
+					button.style.opacity = '1';
+					button.style.pointerEvents = 'auto';
+				})
+			})
+			pollBuilder.addEventListener("pb:minimized", function(){
+				PollBuilderInject._buttons.map(function(button){
+					button.style.opacity = '0';
+					button.style.pointerEvents = 'none';
+				})
+			})
+			PollBuilderInject._buttonsListening = true;
+		}
+		
+		// private function
+		function mergeArrays(a1, a2)
+		{
+			var a = a1.concat(a2);
+			for(var i=0; i<a.length; ++i)
+				for(var j=i+1; j<a.length; ++j)
+					if(a[i] === a[j])
+						a.splice(j--, 1);
+
+			return a;
+		}
 	}
+	static _buttonUpdateSelector = null;
+	static _buttonsListening = false;
+	static _buttons = [];
 }
 
 window.PollBuilderInject = PollBuilderInject;
+
+
