@@ -98,8 +98,13 @@
 					for (var _iterator = items[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 						item = _step.value;
 	
-						logic(item);
-					} // If an interval is supplied, check again on that interval.
+						if (PollBuilderInject._mapped.indexOf(item) < 0) {
+							PollBuilderInject._mapped.push(item);
+							logic(item);
+						}
+					}
+	
+					// If an interval is supplied, check again on that interval.
 					// This is specifically for the purpose of pages that load more
 					// items dynamically, so that it can detect new items later.
 					// Function should check for if items have already been modified.
@@ -120,30 +125,7 @@
 	
 				if (intvl) {
 					PollBuilderInject._interval = setInterval(function () {
-						var _iteratorNormalCompletion2 = true;
-						var _didIteratorError2 = false;
-						var _iteratorError2 = undefined;
-	
-						try {
-							for (var _iterator2 = items[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-								item = _step2.value;
-	
-								logic(item);
-							}
-						} catch (err) {
-							_didIteratorError2 = true;
-							_iteratorError2 = err;
-						} finally {
-							try {
-								if (!_iteratorNormalCompletion2 && _iterator2.return) {
-									_iterator2.return();
-								}
-							} finally {
-								if (_didIteratorError2) {
-									throw _iteratorError2;
-								}
-							}
-						}
+						PollBuilderInject.map(requirements, itemSelector, logic);
 					}, intvl);
 				}
 	
@@ -306,6 +288,7 @@
 		return PollBuilderInject;
 	}();
 	
+	PollBuilderInject._mapped = [];
 	PollBuilderInject._interval = null;
 	
 	

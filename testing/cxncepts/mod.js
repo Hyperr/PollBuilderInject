@@ -1,8 +1,5 @@
 var doEmbed = PollBuilderInject.map('body.template-collection', '.product-item', function(item)
 {
-	if (PollBuilderInject.hasDataElement(item, '.product-link'))
-		return;
-	
 	var img = PollBuilderInject.absoluteURL( PollBuilderInject.getBackgroundImage( item.querySelector('.product-image') ) );
 	var lnk = PollBuilderInject.absoluteURL( item.querySelector('.product-link').getAttribute('href') );
 	
@@ -18,6 +15,7 @@ var doEmbed = PollBuilderInject.map('body.template-collection', '.product-item',
 	s.top = '50%';
 	s.transform = 'translate(50%, 50%)';
 	dragger.append(button);
+	
 }, 1000)
 var pollBuilderOptions = {
 	addButtons:'.poll-builer-add-button',

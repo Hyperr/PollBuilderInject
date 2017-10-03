@@ -42,23 +42,26 @@ class PollBuilderInject
 			throw new Error('Invalid item selector value');
 		
 		// for every item run the logic supplied
-		for (item of items)
-			logic(item);
+		for (item of items) {
+			if (PollBuilderInject._mapped.indexOf(item) < 0) {
+				PollBuilderInject._mapped.push(item);
+				logic(item);
+			}
+		}
 		
 		// If an interval is supplied, check again on that interval.
 		// This is specifically for the purpose of pages that load more
 		// items dynamically, so that it can detect new items later.
-		// Function should check for if items have already been modified.
 		if (intvl) {
 			PollBuilderInject._interval = setInterval(()=>{
-				for (item of items)
-					logic(item);
+				PollBuilderInject.map(requirements, itemSelector, logic);
 			}, intvl)
 		}
 		
 		// return true for success
 		return true;
 	}
+	static _mapped = [];
 	static _interval = null;
 	
 	/**
