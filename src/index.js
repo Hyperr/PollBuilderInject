@@ -58,12 +58,13 @@ class PollBuilderInject
 				PollBuilderInject.map(requirements, itemSelector, logic);
 			}, intvl)
 		}
-		
+		console.log('should connect...')
 		// if the buttons are set up and have instruction to automatically update every new mapping, then do so
 		// this also connects the button to the poll builder, since by nature at this point the builder is already instantiated
 		if (PollBuilderInject._buttonUpdateSelector) {
 			PollBuilderInject.autoHideButtons(PollBuilderInject._buttonUpdateSelector);
 			pollBuilder.addButtons(PollBuilderInject._buttonUpdateSelector);
+			console.log('auto connected!!!')
 		}
 		
 		// return true for success
