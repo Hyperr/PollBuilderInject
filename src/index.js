@@ -14,7 +14,7 @@ class PollBuilderInject
 		The main mapping function for usage when injecting the poll builder into the page.
 	*/
 	static map(requirements, itemSelector, logic, intvl)
-	{
+	{console.log('mapping...')
 		// figure out if page meets requirements and should have poll builder injected
 		if (Array.isArray(requirements)) {
 			if (!requirements.some(document.querySelector(sel)))
@@ -29,7 +29,7 @@ class PollBuilderInject
 			if (!requirements)
 				return false;
 		}
-		
+		console.log('passed...')
 		// figure out what elements on the page are the items themselves
 		var items, item;
 		if (Array.isArray(itemSelector))
@@ -40,19 +40,21 @@ class PollBuilderInject
 			items = document.querySelectorAll(itemSelector);
 		else
 			throw new Error('Invalid item selector value');
-		
+		console.log('length: '+items.length)
 		// for every item run the logic supplied
 		for (item of items) {
 			if (PollBuilderInject._mapped.indexOf(item) < 0) {
+				console.log('...new')
 				PollBuilderInject._mapped.push(item);
 				logic(item);
 			}
 		}
-		
+		console.log('end')
 		// If an interval is supplied, check again on that interval.
 		// This is specifically for the purpose of pages that load more
 		// items dynamically, so that it can detect new items later.
 		if (intvl) {
+			console.log('setting up interval...')
 			clearInterval(PollBuilderInject._interval);
 			PollBuilderInject._interval = setInterval(()=>{
 				PollBuilderInject.map(requirements, itemSelector, logic);
@@ -62,7 +64,7 @@ class PollBuilderInject
 		// if the buttons are set up and have instruction to automatically update every new mapping, then do so
 		if (PollBuilderInject._buttonUpdateSelector)
 			PollBuilderInject.autoHideButtons(PollBuilderInject._buttonUpdateSelector);
-		
+		console.log('----------------------')
 		// return true for success
 		return true;
 	}

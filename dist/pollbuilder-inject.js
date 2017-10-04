@@ -74,6 +74,7 @@
 	  	The main mapping function for usage when injecting the poll builder into the page.
 	  */
 			value: function map(requirements, itemSelector, logic, intvl) {
+				console.log('mapping...');
 				// figure out if page meets requirements and should have poll builder injected
 				if (Array.isArray(requirements)) {
 					if (!requirements.some(document.querySelector(sel))) return false;
@@ -84,11 +85,11 @@
 				} else {
 					if (!requirements) return false;
 				}
-	
+				console.log('passed...');
 				// figure out what elements on the page are the items themselves
 				var items, item;
 				if (Array.isArray(itemSelector)) items = itemSelector;else if (typeof itemSelector === 'function') items = itemSelector();else if (typeof itemSelector === 'string') items = document.querySelectorAll(itemSelector);else throw new Error('Invalid item selector value');
-	
+				console.log('length: ' + items.length);
 				// for every item run the logic supplied
 				var _iteratorNormalCompletion = true;
 				var _didIteratorError = false;
@@ -99,15 +100,11 @@
 						item = _step.value;
 	
 						if (PollBuilderInject._mapped.indexOf(item) < 0) {
+							console.log('...new');
 							PollBuilderInject._mapped.push(item);
 							logic(item);
 						}
 					}
-	
-					// If an interval is supplied, check again on that interval.
-					// This is specifically for the purpose of pages that load more
-					// items dynamically, so that it can detect new items later.
-					// Function should check for if items have already been modified.
 				} catch (err) {
 					_didIteratorError = true;
 					_iteratorError = err;
@@ -123,12 +120,21 @@
 					}
 				}
 	
+				console.log('end');
+				// If an interval is supplied, check again on that interval.
+				// This is specifically for the purpose of pages that load more
+				// items dynamically, so that it can detect new items later.
 				if (intvl) {
+					console.log('setting up interval...');
+					clearInterval(PollBuilderInject._interval);
 					PollBuilderInject._interval = setInterval(function () {
 						PollBuilderInject.map(requirements, itemSelector, logic);
 					}, intvl);
 				}
 	
+				// if the buttons are set up and have instruction to automatically update every new mapping, then do so
+				if (PollBuilderInject._buttonUpdateSelector) PollBuilderInject.autoHideButtons(PollBuilderInject._buttonUpdateSelector);
+				console.log('----------------------');
 				// return true for success
 				return true;
 			}
@@ -238,50 +244,50 @@
 			}
 	
 			/**
-	  	Automatically sets up buttons (either as an array of elements, or a query selector) to show/hide as pollbuilder does.
+	  	Automatically sets up buttons (either as an array/nodelist of elements, a single element, or a query selector) to show/hide as poll builder does.
 	  	@note - must ONLY be called after successful loading of the pollBuilder object/script (i.e. on the callback)
+	  	@note - can be called multiple times to add more each time
 	  */
 	
 		}, {
 			key: 'autoHideButtons',
 			value: function autoHideButtons() {
 				var btns = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '.poll-builer-add-button';
+				var autoUpdate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 	
-				if (typeof btns === 'string') btns = Array.prototype.slice.call(document.querySelectorAll(btns));
+				if (autoUpdate) {
+					if (typeof btns === 'string') PollBuilderInject._buttonUpdateSelector = btns;else throw new Error('To use autoUpdate you must supply a query selector string as the main button identifier.');
+				}
 	
-				pollBuilder.addEventListener("pb:maximized", function () {
-					btns.map(function (button) {
-						button.style.opacity = '1';
-						button.style.pointerEvents = 'auto';
+				if (typeof btns === 'string') btns = Array.prototype.slice.call(document.querySelectorAll(btns));else if (btns instanceof NodeList) btns = Array.prototype.slice.call(btns);else if (!Array.isArray(btns)) btns = [btns];
+	
+				PollBuilderInject._buttons = mergeArrays(PollBuilderInject._buttons, btns);
+	
+				if (!PollBuilderInject._buttonsListening) {
+					pollBuilder.addEventListener("pb:maximized", function () {
+						PollBuilderInject._buttons.map(function (button) {
+							button.style.opacity = '1';
+							button.style.pointerEvents = 'auto';
+						});
 					});
-				});
-				pollBuilder.addEventListener("pb:minimized", function () {
-					btns.map(function (button) {
-						button.style.opacity = '0';
-						button.style.pointerEvents = 'none';
+					pollBuilder.addEventListener("pb:minimized", function () {
+						PollBuilderInject._buttons.map(function (button) {
+							button.style.opacity = '0';
+							button.style.pointerEvents = 'none';
+						});
 					});
-				});
-			}
+					PollBuilderInject._buttonsListening = true;
+				}
 	
-			/**
-	  	Automatically sets up a single button (either as an element, or a query selector) to show/hide as pollbuilder does.
-	  	Different from the plural for the reason that when the interval form of `map` is used they need to be added individually.
-	  	@note - must ONLY be called after successful loading of the pollBuilder object/script (i.e. on the callback)
-	  */
-	
-		}, {
-			key: 'autoHideButton',
-			value: function autoHideButton(btn) {
-				if (typeof btn === 'string') btn = Array.prototype.slice.call(document.querySelector(btn));
-	
-				pollBuilder.addEventListener("pb:maximized", function () {
-					btn.style.opacity = '1';
-					btn.style.pointerEvents = 'auto';
-				});
-				pollBuilder.addEventListener("pb:minimized", function () {
-					btn.style.opacity = '0';
-					btn.style.pointerEvents = 'none';
-				});
+				// private function
+				function mergeArrays(a1, a2) {
+					var a = a1.concat(a2);
+					for (var i = 0; i < a.length; ++i) {
+						for (var j = i + 1; j < a.length; ++j) {
+							if (a[i] === a[j]) a.splice(j--, 1);
+						}
+					}return a;
+				}
 			}
 		}]);
 	
@@ -290,6 +296,9 @@
 	
 	PollBuilderInject._mapped = [];
 	PollBuilderInject._interval = null;
+	PollBuilderInject._buttonUpdateSelector = null;
+	PollBuilderInject._buttonsListening = false;
+	PollBuilderInject._buttons = [];
 	
 	
 	window.PollBuilderInject = PollBuilderInject;
