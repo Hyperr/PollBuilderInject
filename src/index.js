@@ -1,7 +1,7 @@
 
 
 /*******************************************************
- * Copyright (C) 2016 PTP APP LLC - All Rights Reserved
+ * Copyright (C) 2017 PTP APP LLC - All Rights Reserved
  * Unauthorized copying of this file, in whole or in part, via any medium is strictly prohibited.
  * Proprietary and Confidential
  *******************************************************/
@@ -10,6 +10,8 @@ import URLToolkit from 'url-toolkit'
 
 class PollBuilderInject
 {
+	static version = '1.1.0';
+	
 	/**
 		The main mapping function for usage when injecting the poll builder into the page.
 	*/
@@ -58,13 +60,12 @@ class PollBuilderInject
 				PollBuilderInject.map(requirements, itemSelector, logic);
 			}, intvl)
 		}
-		console.log('should connect...')
+		
 		// if the buttons are set up and have instruction to automatically update every new mapping, then do so
 		// this also connects the button to the poll builder, since by nature at this point the builder is already instantiated
 		if (PollBuilderInject._buttonUpdateSelector) {
 			PollBuilderInject.autoHideButtons(PollBuilderInject._buttonUpdateSelector);
 			pollBuilder.addButtons(PollBuilderInject._buttonUpdateSelector);
-			console.log('auto connected!!!')
 		}
 		
 		// return true for success
