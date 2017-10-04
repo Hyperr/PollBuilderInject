@@ -74,7 +74,6 @@
 	  	The main mapping function for usage when injecting the poll builder into the page.
 	  */
 			value: function map(requirements, itemSelector, logic, intvl) {
-				console.log('mapping...');
 				// figure out if page meets requirements and should have poll builder injected
 				if (Array.isArray(requirements)) {
 					if (!requirements.some(document.querySelector(sel))) return false;
@@ -85,11 +84,11 @@
 				} else {
 					if (!requirements) return false;
 				}
-				console.log('passed...');
+	
 				// figure out what elements on the page are the items themselves
 				var items, item;
 				if (Array.isArray(itemSelector)) items = itemSelector;else if (typeof itemSelector === 'function') items = itemSelector();else if (typeof itemSelector === 'string') items = document.querySelectorAll(itemSelector);else throw new Error('Invalid item selector value');
-				console.log('length: ' + items.length);
+	
 				// for every item run the logic supplied
 				var _iteratorNormalCompletion = true;
 				var _didIteratorError = false;
@@ -100,11 +99,14 @@
 						item = _step.value;
 	
 						if (PollBuilderInject._mapped.indexOf(item) < 0) {
-							console.log('...new');
 							PollBuilderInject._mapped.push(item);
 							logic(item);
 						}
 					}
+	
+					// If an interval is supplied, check again on that interval.
+					// This is specifically for the purpose of pages that load more
+					// items dynamically, so that it can detect new items later.
 				} catch (err) {
 					_didIteratorError = true;
 					_iteratorError = err;
@@ -120,12 +122,7 @@
 					}
 				}
 	
-				console.log('end');
-				// If an interval is supplied, check again on that interval.
-				// This is specifically for the purpose of pages that load more
-				// items dynamically, so that it can detect new items later.
 				if (intvl) {
-					console.log('setting up interval...');
 					clearInterval(PollBuilderInject._interval);
 					PollBuilderInject._interval = setInterval(function () {
 						PollBuilderInject.map(requirements, itemSelector, logic);
@@ -134,7 +131,7 @@
 	
 				// if the buttons are set up and have instruction to automatically update every new mapping, then do so
 				if (PollBuilderInject._buttonUpdateSelector) PollBuilderInject.autoHideButtons(PollBuilderInject._buttonUpdateSelector);
-				console.log('----------------------');
+	
 				// return true for success
 				return true;
 			}
@@ -265,18 +262,28 @@
 	
 				if (!PollBuilderInject._buttonsListening) {
 					pollBuilder.addEventListener("pb:maximized", function () {
+						PollBuilderInject._buttonsShowing = true;
 						PollBuilderInject._buttons.map(function (button) {
 							button.style.opacity = '1';
 							button.style.pointerEvents = 'auto';
 						});
 					});
 					pollBuilder.addEventListener("pb:minimized", function () {
+						PollBuilderInject._buttonsShowing = false;
 						PollBuilderInject._buttons.map(function (button) {
 							button.style.opacity = '0';
 							button.style.pointerEvents = 'none';
 						});
 					});
 					PollBuilderInject._buttonsListening = true;
+				}
+	
+				// if is currently showing already, turn the recent additions on
+				if (PollBuilderInject._buttonsShowing) {
+					btns.map(function (button) {
+						button.style.opacity = '1';
+						button.style.pointerEvents = 'auto';
+					});
 				}
 	
 				// private function
@@ -296,6 +303,7 @@
 	
 	PollBuilderInject._mapped = [];
 	PollBuilderInject._interval = null;
+	PollBuilderInject._buttonsShowing = false;
 	PollBuilderInject._buttonUpdateSelector = null;
 	PollBuilderInject._buttonsListening = false;
 	PollBuilderInject._buttons = [];
