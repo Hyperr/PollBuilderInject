@@ -19,7 +19,7 @@ class PollBuilderInject
 	{
 		// figure out if page meets requirements and should have poll builder injected
 		if (Array.isArray(requirements)) {
-			if (!requirements.some(document.querySelector(sel)))
+			if (!requirements.some(sel=>document.querySelector(sel)))
 				return false;
 		} else if (typeof requirements === 'function') {
 			if (!requirements())
