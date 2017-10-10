@@ -1,5 +1,8 @@
 var doEmbed = PollBuilderInject.map('body.collection', '.product-index', function(item)
-{
+{console.log('-----------------------')
+	console.log(item);
+	console.log(item.querySelector('.reveal > image'));
+	console.log(item.querySelector('.reveal > image').src);
 	var img = PollBuilderInject.absoluteURL( item.querySelector('.reveal > image').src );
 	var lnk = PollBuilderInject.absoluteURL( jQuery(item).children('a').attr('href') );
 	
