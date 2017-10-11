@@ -1,3 +1,4 @@
+console.log('v 0.2');
 var doEmbed = PollBuilderInject.map('body.collection', '.product-index', function(item)
 {
 	var img = PollBuilderInject.absoluteURL( item.querySelector('.reveal > img').src );
@@ -9,11 +10,11 @@ var doEmbed = PollBuilderInject.map('body.collection', '.product-index', functio
 	
 	var button = PollBuilderInject.defaultButton(img, lnk);
 	var s = button.style;
-	s.borderRadius = '2px';
 	s.position = 'absolute';
 	s.right = '50%';
 	s.top = '50%';
 	s.transform = 'translate(50%, 50%)';
+	s.zIndex = 2;
 	dragger.append(button);
 	
 })
