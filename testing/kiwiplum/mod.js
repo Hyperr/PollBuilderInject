@@ -1,10 +1,10 @@
-console.log('v 0.2');
+console.log('v 0.3');
 var doEmbed = PollBuilderInject.map('body.collection', '.product-index', function(item)
 {
 	var img = PollBuilderInject.absoluteURL( item.querySelector('.reveal > img').src );
 	var lnk = PollBuilderInject.absoluteURL( jQuery(item).children('a').attr('href') );
 	
-	var dragger = jQuery(item).children('a')[0];
+	var dragger = item.querySelector('.hidden > img');
 	dragger.setAttribute('draggable', 'true');
 	PollBuilderInject.addDataElement(dragger, img, lnk);
 	
@@ -15,7 +15,7 @@ var doEmbed = PollBuilderInject.map('body.collection', '.product-index', functio
 	s.top = '50%';
 	s.transform = 'translate(50%, 50%)';
 	s.zIndex = 2;
-	dragger.append(button);
+	jQuery(item).children('a')[0].append(button);
 	
 })
 var pollBuilderOptions = {
