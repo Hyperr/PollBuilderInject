@@ -1,4 +1,4 @@
-console.log('v 0.5');
+console.log('v 0.6');
 var doEmbed = PollBuilderInject.map('body.collection', '.product-index', function(item)
 {
 	var img = PollBuilderInject.absoluteURL( item.querySelector('.reveal > img').src );
@@ -32,6 +32,6 @@ var pollBuilderOptions = {
 }
 if (doEmbed) {
 	PollBuilderInject.embed('eHb3y2NmS4F4Twat', pollBuilderOptions, function(){
-	    PollBuilderInject.autoHideButtons('.poll-builer-add-button', true);
+	    PollBuilderInject.autoHideButtons('.poll-builer-add-button');
 	})
 }
