@@ -1,4 +1,4 @@
-console.log('v 0.4');
+console.log('v 0.5');
 var doEmbed = PollBuilderInject.map('body.collection', '.product-index', function(item)
 {
 	var img = PollBuilderInject.absoluteURL( item.querySelector('.reveal > img').src );
@@ -31,7 +31,7 @@ var pollBuilderOptions = {
 	builderStyles: 'box-shadow:1px 0 1px #000,-1px 0 1px #000,0 1px 1px #000,0 -1px 1px #000, 3px 3px 3px rgba(0, 0, 0, 0.15); border-radius: 2px;'
 }
 if (doEmbed) {
-	PollBuilderInject.embed('k9qDzzl842M0MJlT', pollBuilderOptions, function(){
+	PollBuilderInject.embed('eHb3y2NmS4F4Twat', pollBuilderOptions, function(){
 	    PollBuilderInject.autoHideButtons('.poll-builer-add-button', true);
 	})
 }
