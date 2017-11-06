@@ -7,7 +7,7 @@ var specifiedPages = [
 	'silk'
 ]
 
-var pageTest()
+function pageTest()
 {
 	var isCollection = document.querySelector('body.collection');
 	
