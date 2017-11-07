@@ -1,4 +1,4 @@
-console.log('v 1');
+console.log('v 2');
 
 var specifiedPages = [
 	'shapewear',
