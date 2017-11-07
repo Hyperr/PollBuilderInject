@@ -12,7 +12,7 @@ function pageTest()
 	var isCollection = document.querySelector('body.collection');
 	
 	var exec = /\/([\w-]*?)(\/?)$/.exec(location.pathname);
-	var isSpecified = exec && specifiedPages.indexOf(exec[1]);
+	var isSpecified = exec && specifiedPages.indexOf(exec[1]) > -1;
 	
 	return isCollection && isSpecified;
 }
