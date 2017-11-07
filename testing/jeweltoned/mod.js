@@ -29,11 +29,13 @@ var doEmbed = PollBuilderInject.map(pageTest, '.product', function(item)
 	var button = PollBuilderInject.defaultButton(img, lnk);
 	var s = button.style;
 	s.position = 'absolute';
-	s.right = '50%';
-	s.top = '50%';
-	s.transform = 'translate(50%, 50%)';
+	s.padding = '10px';
+    s.left = '50%';
+    s.width = '60%';
+    s.marginLeft = '-30%';
+    s.fontWeight = '300';
 	s.zIndex = 2;
-	item.querySelector('.ci').appendChild(button);
+	item.querySelector('.product-details').appendChild(button);
 })
 var pollBuilderOptions = {
 	addButtons:'.poll-builer-add-button',
