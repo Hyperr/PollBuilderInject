@@ -30,10 +30,12 @@ var doEmbed = PollBuilderInject.map(pageTest, '.product', function(item)
 	var s = button.style;
 	s.position = 'absolute';
 	s.padding = '10px';
-    s.left = '50%';
-    s.width = '60%';
-    s.marginLeft = '-30%';
-    s.fontWeight = '300';
+	s.left = '50%';
+	s.width = '60%';
+	s.marginLeft = '-30%';
+	s.fontWeight = '300';
+	s.fontSize = '12px';
+	s.bottom = 'calc(20% + 32px)';
 	s.zIndex = 2;
 	item.querySelector('.product-details').appendChild(button);
 })
