@@ -51,7 +51,7 @@ var pollBuilderOptions = {
 	buttonStyles: ''
 }
 if (doEmbed) {
-	PollBuilderInject.embed('eHb3y2NmS4F4Twat', pollBuilderOptions, function(){
+	PollBuilderInject.embed('wIeQl9DiHvDXtwmP', pollBuilderOptions, function(){
 	    PollBuilderInject.autoHideButtons('.poll-builer-add-button');
 	})
 }
