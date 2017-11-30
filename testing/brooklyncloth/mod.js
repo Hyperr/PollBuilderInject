@@ -1,7 +1,8 @@
-console.log('v2');
+console.log('** v2 ******************************');
 
 var doEmbed = PollBuilderInject.map('body.template-collection', '.grid__item', function(item)
 {
+	console.log('DOING...***************************************')
 	var img = PollBuilderInject.absoluteURL( item.querySelector('.grid__image img').src );
 	var lnk = PollBuilderInject.absoluteURL( item.querySelector('.grid__image').getAttribute('href') );
 	
