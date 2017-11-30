@@ -1,4 +1,4 @@
-console.log('** v6 ******************************');
+console.log('** v7 ******************************');
 
 var doEmbed = PollBuilderInject.map('body.template-collection', '.product-grid-item', function(item)
 {
@@ -20,8 +20,8 @@ var doEmbed = PollBuilderInject.map('body.template-collection', '.product-grid-i
 	s.fontSize = '0.8em';
 	s.fontFamily = '"Montserrat","Helvetica Neue",Arial,sans-serif';
 	s.textTransform = 'uppercase';
+	s.letterSpacing = '1px';
 	s.top = '30%';
-	s.transform = 'translateX(-50%)';
 	s.zIndex = 2;
 	item.querySelector('.grid__image').appendChild(button);
 })
