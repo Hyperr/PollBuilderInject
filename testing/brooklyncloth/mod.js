@@ -1,6 +1,6 @@
-console.log('** v3 ******************************');
+console.log('** v4 ******************************');
 
-var doEmbed = PollBuilderInject.map('body.template-collection', '.grid__item', function(item)
+var doEmbed = PollBuilderInject.map('body.template-collection', '.product-grid-item', function(item)
 {
 	console.log('DOING...***************************************', item);
 	var img = PollBuilderInject.absoluteURL( item.querySelector('.grid__image img').src );
