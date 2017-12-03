@@ -1,4 +1,4 @@
-console.log('** v7 ******************************');
+console.log('** v8 ******************************');
 
 var doEmbed = PollBuilderInject.map('body.template-collection', '.product-grid-item', function(item)
 {
@@ -39,7 +39,7 @@ var pollBuilderOptions = {
 	zIndex: 1000000000
 }
 if (doEmbed) {
-	PollBuilderInject.embed('wIeQl9DiHvDXtwmP', pollBuilderOptions, function(){
+	PollBuilderInject.embed('tX2ciu056Idm8dJV', pollBuilderOptions, function(){
 	    PollBuilderInject.autoHideButtons('.poll-builer-add-button');
 	})
 }
