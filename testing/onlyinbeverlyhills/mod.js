@@ -12,12 +12,11 @@ var doEmbed = PollBuilderInject.map('body.collection', '.thumbnail', function(it
 	
 	var button = PollBuilderInject.defaultButton(img, lnk);
 	var s = button.style;
-	s.padding = '6px 0';
-	s.backgroundColor = '#888';
-	s.border = '1px solid #888';
+	s.padding = '0px 0';
+	s.backgroundColor = '#F36271';
 	s.position = 'absolute';
-	s.width = '130px';
-	s.top = 'calc(50% + 50px)';
+	s.width = '132px';
+	s.top = 'calc(10px)';
 	s.left = '50%';
 	s.marginLeft = '-65px';
 	s.fontSize = '14px';
