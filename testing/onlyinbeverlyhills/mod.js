@@ -1,4 +1,4 @@
-console.log('v 2');
+console.log('v 3');
 
 
 var doEmbed = PollBuilderInject.map('body.collection', '.thumbnail', function(item)
@@ -14,10 +14,10 @@ var doEmbed = PollBuilderInject.map('body.collection', '.thumbnail', function(it
 	var s = button.style;
 	s.padding = '6px 0';
 	s.backgroundColor = '#888';
-	s.borderColor = '#888';
+	s.border = '1px solid #888';
 	s.position = 'absolute';
 	s.width = '130px';
-	s.top = '20px';
+	s.top = 'calc(50% + 50px)';
 	s.left = '50%';
 	s.marginLeft = '-65px';
 	s.fontSize = '14px';
@@ -25,6 +25,8 @@ var doEmbed = PollBuilderInject.map('body.collection', '.thumbnail', function(it
 	s.fontWeight = 'bold';
 	s.textTransform = 'uppercase';
 	s.letterSpacing = '1px';
+	s.fontFamily = "'AvenirLTStd-Light' !important";
+	s.borderRadius = '3px';
 	item.append(button);
 })
 var pollBuilderOptions = {
