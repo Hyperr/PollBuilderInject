@@ -1,4 +1,4 @@
-console.log('v 3');
+console.log('v 4');
 
 
 var doEmbed = PollBuilderInject.map('body.collection', '.thumbnail', function(item)
@@ -12,20 +12,21 @@ var doEmbed = PollBuilderInject.map('body.collection', '.thumbnail', function(it
 	
 	var button = PollBuilderInject.defaultButton(img, lnk);
 	var s = button.style;
-	s.padding = '0px 0';
+	s.padding = '0px';
 	s.backgroundColor = '#F36271';
 	s.position = 'absolute';
 	s.width = '132px';
-	s.top = 'calc(10px)';
+	s.top = '10px';
 	s.left = '50%';
 	s.marginLeft = '-65px';
-	s.fontSize = '14px';
+	s.fontSize = '12px';
 	s.cursor = 'pointer';
 	s.fontWeight = 'bold';
 	s.textTransform = 'uppercase';
 	s.letterSpacing = '1px';
 	s.fontFamily = "'AvenirLTStd-Light' !important";
 	s.borderRadius = '3px';
+	s.lineHeight = '25px';
 	item.append(button);
 })
 var pollBuilderOptions = {
