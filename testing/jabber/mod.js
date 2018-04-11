@@ -1,4 +1,4 @@
-console.log('v 1');
+console.log('v 2');
 var doEmbed = PollBuilderInject.map('body.template-collection', '.col-product', function(item)
 {
 	var img = PollBuilderInject.absoluteURL( item.querySelector('.featured-image').src );
@@ -16,7 +16,7 @@ var doEmbed = PollBuilderInject.map('body.template-collection', '.col-product', 
 	s.transform = 'translate(50%, 50%)';
 	s.zIndex = 2;
 	
-	item.appendChild(button);
+	item.querySelector('.grid-link__image-centered').appendChild(button);
 })
 var pollBuilderOptions = {
 	addButtons:'.poll-builer-add-button',
