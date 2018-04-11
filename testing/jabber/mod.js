@@ -15,8 +15,8 @@ var doEmbed = PollBuilderInject.map('body.template-collection', '.col-product', 
 	s.top = '50%';
 	s.transform = 'translate(50%, 50%)';
 	s.zIndex = 2;
-	jQuery(item).children('a')[0].append(button);
 	
+	item.appendChild(button);
 })
 var pollBuilderOptions = {
 	addButtons:'.poll-builer-add-button',
