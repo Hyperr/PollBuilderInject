@@ -10,7 +10,7 @@ import URLToolkit from 'url-toolkit'
 
 class PollBuilderInject
 {
-	static version = '1.1.0';
+	static version = '1.1.1';
 	
 	/**
 		The main mapping function for usage when injecting the poll builder into the page.

@@ -308,7 +308,7 @@
 		return PollBuilderInject;
 	}();
 	
-	PollBuilderInject.version = '1.1.0';
+	PollBuilderInject.version = '1.1.1';
 	PollBuilderInject._mapped = [];
 	PollBuilderInject._interval = null;
 	PollBuilderInject._buttonsShowing = false;
