@@ -90,7 +90,7 @@ class PollBuilderInject
 			pollBuilder.embedSticky(token, options || {});
 			callback();
 		});
-		script.src = 'https://scripts.gethyperr.com/desktop/latest.js';
+		script.src = 'https://scripts.gethyperr.com/pollbuilder-embed/latest.js';
 		document.getElementsByTagName('head')[0].appendChild(script);
 	}
 	
